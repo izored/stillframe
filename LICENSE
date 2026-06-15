@@ -1,0 +1,37 @@
+Stillframe License
+Copyright (c) 2026 izo.studio. All rights reserved.
+
+This source code is made available for transparency and review only.
+
+You MAY:
+- View and read the source code in this repository.
+
+You MAY NOT, without prior written permission from the copyright holder:
+- Use, run, or deploy this software or any part of it, for any purpose,
+  personal or commercial;
+- Copy, modify, adapt, or create derivative works;
+- Redistribute, sublicense, sell, or host this software or derivative works;
+- Remove or alter this license, attribution, or notices.
+
+No license or right is granted by implication, estoppel, or otherwise, except
+the limited view-and-read permission stated above. All other rights are
+reserved by the copyright holder.
+
+This is an interim license while the project's distribution model is decided
+(the macOS application will be a paid product; a separate model for the
+self-hosted version may follow). The copyright holder may relicense its own
+code at any time.
+
+Portions of this software are derived from third-party software licensed under
+the MIT License. Those portions remain under their original MIT terms; see
+NOTICE.md. Nothing in this license removes or overrides the rights granted by
+those third-party licenses.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.
+
+Stillframe is a self-reflection and wellness tool. It is not therapy,
+diagnosis, or crisis care.
+
+For licensing inquiries: hello@izo.studio

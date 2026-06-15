@@ -10,7 +10,9 @@ Stillframe supports reflection. It is not therapy, diagnosis, or crisis care. If
 
 ## Status
 
-Early build. Phase 1 backend is in place: health checks, provider abstraction (Ollama first), the Safe Set safety layer, Frames / Scenes / Scripts, and a safety-wrapped streaming reflect endpoint. The frontend (React + Vite, Apple-grade, Framer Motion) and the native Swift macOS app come next.
+Early build. Backend foundation and the memory layer are in place: health checks, provider abstraction (Ollama first), the Safe Set safety layer, Frames / Scenes / Scripts, a safety-wrapped streaming reflect endpoint, and structured recall over your own frames. The frontend (React + Vite, Framer Motion) is scaffolded; the native Swift macOS app comes later.
+
+See [ROADMAP.md](ROADMAP.md) for phases and [docs/SPEC.md](docs/SPEC.md) for the full engineering spec.
 
 ## Architecture
 
@@ -71,3 +73,15 @@ No provider call bypasses the Safe Set. Inbound text is screened for crisis and 
 - `anthropic` (Claude, cloud) — optional, opt-in, key required
 
 Local-only scenes block cloud providers automatically.
+
+## License
+
+Interim, all rights reserved — see [LICENSE](LICENSE). The source is viewable for transparency and review only; it is **not** licensed for use, deployment, or redistribution while the distribution model is being decided. The macOS app will be a paid product; the model for the self-hosted version is undecided.
+
+Portions of the safety layer and prompts are derived from [joebwd/mental-wellness-prompts](https://github.com/joebwd/mental-wellness-prompts) under the MIT License, retained in [NOTICE.md](NOTICE.md).
+
+For licensing inquiries: hello@izo.studio
+
+## Disclaimer
+
+Stillframe supports reflection. It is not therapy, diagnosis, or crisis care. If you are in danger, contact a crisis line. Resources are built in.
