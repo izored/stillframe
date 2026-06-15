@@ -21,14 +21,14 @@ services:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
 
-  # frontend:
-  #   build: ./frontend
-  #   container_name: stillframe-frontend
-  #   ports:
-  #     - "127.0.0.1:5180:80"
-  #   depends_on:
-  #     - backend
-  #   restart: unless-stopped
+  frontend:
+    build: ./frontend
+    container_name: stillframe-frontend
+    ports:
+      - "127.0.0.1:5180:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
 
 volumes:
   stillframe-data:

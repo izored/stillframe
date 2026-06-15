@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Stillframe design tokens — calm draft (Option A: warm sand + quiet teal).
+   Pending palette sign-off; see 04_Design/design-system. Inter is the SF Pro
+   substitute, self-hosted later (no CDN call for privacy). */
+:root {
+  --canvas: #faf7f2;
+  --surface: #f2ece3;
+  --surface-pearl: #fffdfa;
+  --ink: #2a2622;
+  --ink-muted-80: #4a443d;
+  --ink-muted-48: #8a8178;
+  --hairline: #e6ddd0;
+  --accent: #3f7a75;
+  --accent-focus: #4c8e88;
+
+  --radius-md: 16px;
+  --radius-pill: 9999px;
+  --shadow-frame: 0 8px 30px rgba(42, 38, 34, 0.12);
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #1a1714;
+    --surface: #221e1a;
+    --surface-pearl: #262119;
+    --ink: #f2ece3;
+    --ink-muted-80: #b8afa4;
+    --ink-muted-48: #8a8178;
+    --hairline: #312b25;
+    --accent: #7fc2bc;
+    --accent-focus: #8fd0ca;
+  }
+}
+
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.44;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

@@ -14,8 +14,20 @@ class Settings(BaseSettings):
     backend_port: int = 8000
     cors_origins: str = "http://localhost:5173,http://localhost:5180"
 
-    # Persistence
+    # Profile: "public" ships empty (defaults, no personal data).
+    # "creator" loads personal overrides (db, presence/boundaries, secrets)
+    # that live under instance/ and are never committed.
+    stillframe_profile: str = "public"
+
+    # Persistence. Public default is an empty gitignored data dir.
+    # Creator points DB_PATH at instance/ (also gitignored).
     db_path: str = "./data/stillframe.db"
+
+    # Editable Editor identity. Blank = packaged defaults (presence.md /
+    # boundaries.md in the prompts package). Creator sets these to personal,
+    # gitignored override files under instance/.
+    presence_path: str = ""
+    boundaries_path: str = ""
 
     # Provider selection
     active_provider: str = "ollama"

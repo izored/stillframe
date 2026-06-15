@@ -6,21 +6,36 @@ __pycache__/
 venv/
 .pytest_cache/
 
-# Env / secrets
+# Env / secrets — NEVER commit
 .env
+.env.*
+!.env.example
 *.local
+*.key
+*.pem
+secrets/
+
+# Personal instance — the creator's private profile, data, and overrides.
+# The repo ships EMPTY. Anything personal lives here and is never committed.
+instance/
+/backend/instance/
 
 # Data (local-first — never commit thoughts). Anchored so app/scripts/data stays.
 *.db
 *.sqlite
 *.sqlite3
+*.db-wal
+*.db-shm
 /backend/data/
 /data/
+personal/
+*.personal.md
 
 # Node / frontend (later)
 node_modules/
 dist/
 .vite/
+*.tsbuildinfo
 
 # OS / editor
 .DS_Store
