@@ -132,6 +132,13 @@ class StillframeDB:
                 CREATE INDEX IF NOT EXISTS idx_frames_scene ON frames(scene_id);
                 CREATE INDEX IF NOT EXISTS idx_frames_created ON frames(created_at);
                 CREATE INDEX IF NOT EXISTS idx_stage_hist_arc ON arc_stage_history(arc_id);
+                CREATE INDEX IF NOT EXISTS idx_summaries_frame ON session_summaries(frame_id);
+                CREATE INDEX IF NOT EXISTS idx_facts_key ON user_facts(key);
+
+                -- Keyword recall over frame text (semantic sqlite-vec added later).
+                CREATE VIRTUAL TABLE IF NOT EXISTS frames_fts USING fts5(
+                    frame_id UNINDEXED, body
+                );
             """)
             self.conn.commit()
 
@@ -180,6 +187,7 @@ class StillframeDB:
                  frame.reframe, frame.mood_score, frame.created_at, frame.updated_at),
             )
             self.conn.commit()
+        self._index_frame_fts(frame)
         return frame
 
     def update_frame(self, frame_id: str, **fields) -> Optional[Frame]:
@@ -193,7 +201,10 @@ class StillframeDB:
             self.conn.execute(f"UPDATE frames SET {cols} WHERE id = ?",
                               (*sets.values(), frame_id))
             self.conn.commit()
-        return self.get_frame(frame_id)
+        frame = self.get_frame(frame_id)
+        if frame:
+            self._index_frame_fts(frame)
+        return frame
 
     def get_frame(self, frame_id: str) -> Optional[Frame]:
         with self._lock:
@@ -216,6 +227,73 @@ class StillframeDB:
             cur = self.conn.execute("DELETE FROM frames WHERE id = ?", (frame_id,))
             self.conn.commit()
         return cur.rowcount > 0
+
+    # ── Memory: FTS, facts, summaries ──────────────────────────────────
+    def _index_frame_fts(self, frame: "Frame"):
+        body = " ".join(x for x in (frame.title, frame.captured, frame.reflection, frame.reframe) if x)
+        with self._lock:
+            self.conn.execute("DELETE FROM frames_fts WHERE frame_id = ?", (frame.id,))
+            self.conn.execute("INSERT INTO frames_fts (frame_id, body) VALUES (?, ?)",
+                              (frame.id, body))
+            self.conn.commit()
+
+    def search_frames(self, fts_query: str, limit: int = 5,
+                      scene_id: Optional[str] = None) -> list[Frame]:
+        if not fts_query:
+            return []
+        sql = ("SELECT f.* FROM frames_fts ft JOIN frames f ON f.id = ft.frame_id "
+               "WHERE frames_fts MATCH ?")
+        params: list = [fts_query]
+        if scene_id:
+            sql += " AND f.scene_id = ?"
+            params.append(scene_id)
+        sql += " ORDER BY rank LIMIT ?"
+        params.append(limit)
+        with self._lock:
+            try:
+                rows = self.conn.execute(sql, params).fetchall()
+            except sqlite3.OperationalError:
+                return []
+        return [self._row_to_frame(r) for r in rows]
+
+    def upsert_fact(self, key: str, value: str, confidence: float = 0.8):
+        ts = _now()
+        with self._lock:
+            row = self.conn.execute(
+                "SELECT id, confidence FROM user_facts WHERE key = ? AND value = ?",
+                (key, value)).fetchone()
+            if row:
+                # Recurrence: nudge confidence up, refresh recency.
+                new_conf = min(1.0, max(confidence, row["confidence"]) + 0.05)
+                self.conn.execute(
+                    "UPDATE user_facts SET confidence = ?, updated_at = ? WHERE id = ?",
+                    (new_conf, ts, row["id"]))
+            else:
+                self.conn.execute(
+                    "INSERT INTO user_facts (key, value, confidence, created_at, updated_at) "
+                    "VALUES (?, ?, ?, ?, ?)", (key, value, confidence, ts, ts))
+            self.conn.commit()
+
+    def top_facts(self, limit: int = 8) -> list[dict]:
+        with self._lock:
+            rows = self.conn.execute(
+                "SELECT key, value, confidence FROM user_facts "
+                "ORDER BY confidence DESC, updated_at DESC LIMIT ?", (limit,)).fetchall()
+        return [dict(r) for r in rows]
+
+    def save_summary(self, frame_id: Optional[str], summary: str):
+        with self._lock:
+            self.conn.execute(
+                "INSERT INTO session_summaries (frame_id, summary, created_at) VALUES (?, ?, ?)",
+                (frame_id, summary, _now()))
+            self.conn.commit()
+
+    def recent_summaries(self, limit: int = 3) -> list[str]:
+        with self._lock:
+            rows = self.conn.execute(
+                "SELECT summary FROM session_summaries ORDER BY created_at DESC LIMIT ?",
+                (limit,)).fetchall()
+        return [r["summary"] for r in rows]
 
     @staticmethod
     def _row_to_frame(r: sqlite3.Row) -> Frame:

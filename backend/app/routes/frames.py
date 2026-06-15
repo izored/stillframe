@@ -5,7 +5,10 @@ from __future__ import annotations
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
+from ..config import settings
 from ..db import db
+from ..memory import MemoryStore
+from ..providers import get_provider
 
 router = APIRouter(prefix="/frames", tags=["frames"])
 
@@ -58,3 +61,23 @@ def update_frame(frame_id: str, body: FrameUpdate):
 def delete_frame(frame_id: str):
     ok = db.delete_frame(frame_id)
     return {"data": {"deleted": ok}, "error": None if ok else "frame_not_found"}
+
+
+@router.post("/{frame_id}/remember")
+async def remember_frame(frame_id: str, provider: str | None = None):
+    """Run the memory pipeline for a completed frame: extract summary + facts.
+
+    Uses a local provider by default (privacy). Private/local-only scenes must
+    not be processed by a cloud model.
+    """
+    frame = db.get_frame(frame_id)
+    if not frame:
+        return {"data": None, "error": "frame_not_found"}
+
+    p = get_provider(provider or settings.active_provider)
+    scene = db.get_scene(frame.scene_id) if frame.scene_id else None
+    if scene and scene.local_only and not p.local:
+        return {"data": None, "error": "scene_is_local_only"}
+
+    result = await MemoryStore(db).process_frame(frame, p)
+    return {"data": result, "error": None}

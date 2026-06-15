@@ -21,6 +21,7 @@ from pydantic import BaseModel, Field
 
 from ..config import settings
 from ..db import db
+from ..memory import MemoryStore
 from ..prompts import build_system_prompt
 from ..providers import get_provider
 from ..safety import WellnessSafetySupervisor
@@ -60,8 +61,18 @@ async def _run(req: ReflectRequest) -> AsyncGenerator[str, None]:
         yield _event("done", blocked=True)
         return
 
+    # Memory context only goes to LOCAL providers — personal memory is never
+    # shipped to a cloud model by default.
+    memory_context = ""
+    if provider.local:
+        try:
+            memory_context = MemoryStore(db).build_memory_context(req.text, req.scene_id)
+        except Exception:
+            memory_context = ""
+
     system = build_system_prompt(
         safety_guidance=supervisor.prompt_guidance(),
+        memory_context=memory_context,
         scene=scene.name if scene else "",
     )
 
