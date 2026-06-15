@@ -1,0 +1,22 @@
+{
+  "id": "overwhelm",
+  "name": "Overwhelm Grounding Take",
+  "summary": "When too much is happening at once. Slow it down, name one thing, find the next small step.",
+  "steps": [
+    {
+      "phase": "frame",
+      "label": "Name the weight",
+      "prompt": "What is feeling like too much right now?"
+    },
+    {
+      "phase": "sit",
+      "label": "Find the ground",
+      "prompt": "Of everything on you, which one piece is heaviest today?"
+    },
+    {
+      "phase": "reframe",
+      "label": "One small step",
+      "prompt": "What is one small, doable thing that would make the next hour a little lighter?"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "end-of-day",
+  "name": "End-of-Day Director's Cut",
+  "summary": "A short wind-down. Frame the day, look at one moment, decide what to keep.",
+  "steps": [
+    {
+      "phase": "frame",
+      "label": "Frame the day",
+      "prompt": "What is one moment from today that is still with you?"
+    },
+    {
+      "phase": "sit",
+      "label": "Stay with it",
+      "prompt": "What was going on for you in that moment? Say it plainly."
+    },
+    {
+      "phase": "reframe",
+      "label": "Decide what to keep",
+      "prompt": "Looking at it now, what do you want to carry forward, and what can you set down?"
+    }
+  ]
+}
