@@ -20,7 +20,7 @@ secrets/
 instance/
 /backend/instance/
 
-# Data (local-first — never commit thoughts). Anchored so app/scripts/data stays.
+# Data (on your machine — never commit thoughts). Anchored so app/scripts/data stays.
 *.db
 *.sqlite
 *.sqlite3

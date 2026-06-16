@@ -1,7 +1,8 @@
-"""Safe Set — Stillframe's safety & crisis layer.
+"""Safe Set — Stillframe's deterministic safety & crisis layer.
 
-Ported from the foundation repo's deterministic wellness safety supervisor.
-No provider call may bypass this layer.
+Always on, provider-agnostic, primary. No provider call may bypass it. When a
+strong cloud model (e.g. Claude) is configured, it can act as an added safety
+reviewer, but this deterministic layer never depends on a third party.
 """
 
 from .supervisor import (

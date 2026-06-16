@@ -6,12 +6,12 @@ The single technical spec for the codebase. Product/brand/design context lives i
 ---
 
 ## 1. What it is
-Self-hosted, local-first mental wellness workspace. Guided reflection in frames, not a chat box. Not therapy, diagnosis, or crisis care. Tagline: "When life won't pause, your thoughts still can."
+A workspace for catching a destructive thought, looking at it safely, and reframing what it means. Guided reflection in frames, not a chat box. Runs on your machine. Not therapy, diagnosis, or crisis care. Tagline: "When life won't pause, your thoughts still can."
 
 ## 2. Principles
 - **Local-first, privacy by default.** Thoughts stay on the machine. Cloud AI is opt-in and never silent.
 - **API-first.** All logic in the backend. Web (React) and native (Swift macOS) are thin clients over one contract.
-- **Safety is non-negotiable.** No provider call bypasses the Safe Set. Behaviour rules are non-removable.
+- **Safety is non-negotiable.** The Safe Set is deterministic and always on; no provider call bypasses it. Behaviour rules are non-removable. When a strong cloud model (e.g. Claude) is configured as a provider, it may add a second safety pass, but the deterministic layer never depends on a third party. Stillframe owns its safety logic.
 - **Glass box.** Prompts, safety logic, storage are readable and editable.
 - **Ships empty.** The repo contains no personal data. Personal use is a separate profile.
 
@@ -73,7 +73,7 @@ Response shape `{ data, error }` for CRUD; NDJSON stream for reflect.
 - Memory/arcs/auth endpoints — planned per phase.
 
 ## 10. Providers
-HTTP adapters behind one interface (`ProviderAdapter`): `info()` + `stream()`. `ollama` (local, default, auto-detects model), `openai_compat` (llama.cpp / LM Studio / OpenAI), `anthropic` (cloud, opt-in, key-gated). Registry resolves by name. Local-only scenes reject non-local providers.
+HTTP adapters behind one interface (`ProviderAdapter`): `info()` + `stream()`. `ollama` (local, default, auto-detects model), `openai_compat` (llama.cpp / LM Studio / OpenAI), `anthropic` (cloud, opt-in, key-gated). Registry resolves by name. Local-only scenes reject non-local providers. If `anthropic` is configured, it may also serve as an optional second safety pass over the deterministic Safe Set (never required, never a replacement).
 
 ## 11. Voice input (Whisper)
 `POST /transcribe`: audio blob → text, local model, audio never leaves the machine. Web records via MediaRecorder; Swift may use native Speech or the same endpoint. Fills the Frame input; user edits before save/send. Transcribed text flows through the same Safe Set as typed text.
@@ -89,7 +89,7 @@ First run only, skippable, replayable from Settings. Calm, low-stimulus, one ide
 1. **Welcome** — wordmark + tagline + "Begin". Slow fade-up, soft still, breathing scale.
 2. **What is a Frame** — capture a moment, sit with it, reframe. Three quiet lines.
 3. **The Editor** — editor, not director. It suggests, never prescribes. Plain language.
-4. **Your thoughts stay here** — local-first; cloud is opt-in. Privacy as dignity, not fear.
+4. **Your thoughts stay here** — they stay on your machine; cloud is opt-in. Privacy as dignity, not fear. (Not the lead; comes after the purpose.)
 5. **Choose your editor** — pick provider; Local (Ollama) preselected.
 6. **Set your lock** — passkey/passcode; optional now.
 7. **First frame nudge** — land on Home with a gentle "Frame a thought."

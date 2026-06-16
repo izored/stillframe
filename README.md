@@ -2,7 +2,7 @@
 
 When life won't pause, your thoughts still can.
 
-Stillframe is a self-hosted, local-first space for guided reflection. Frame a moment, sit with it safely, reframe what it means. Your thoughts stay on your machine. Local AI runs through Ollama. Cloud providers are optional and opt-in.
+Stillframe helps you catch a destructive thought, look at it safely, and reframe what it means. Guided reflection in frames, not a chat box. Your thoughts stay on your machine; local AI runs through Ollama and cloud providers are optional and opt-in.
 
 Stillframe supports reflection. It is not therapy, diagnosis, or crisis care. If you are in danger, contact a crisis line. Resources are built in.
 
@@ -64,7 +64,7 @@ uvicorn app.main:app --reload --port 8000
 
 ## Safety
 
-No provider call bypasses the Safe Set. Inbound text is screened for crisis and policy violations before any model runs; streamed output is held in a buffer and blocked if it breaches policy. Crisis input returns resources immediately and the model is not called. Logic ported from the foundation repo (joebwd/mental-wellness-prompts), MIT licensed.
+No provider call bypasses the Safe Set. Inbound text is screened for crisis and policy violations before any model runs; streamed output is held in a buffer and blocked if it breaches policy. Crisis input returns resources immediately and the model is not called. The Safe Set is deterministic and always on. When a strong cloud model (e.g. Claude) is configured as a provider, it can act as an added safety reviewer, but the deterministic layer never depends on it.
 
 ## Providers
 
@@ -78,9 +78,9 @@ Local-only scenes block cloud providers automatically.
 
 Interim, all rights reserved — see [LICENSE](LICENSE). The source is viewable for transparency and review only; it is **not** licensed for use, deployment, or redistribution while the distribution model is being decided. The macOS app will be a paid product; the model for the self-hosted version is undecided.
 
-Portions of the safety layer and prompts are derived from [joebwd/mental-wellness-prompts](https://github.com/joebwd/mental-wellness-prompts) under the MIT License, retained in [NOTICE.md](NOTICE.md).
+Third-party attributions are in [NOTICE.md](NOTICE.md).
 
-For licensing inquiries: hello@izo.studio
+For licensing inquiries: dev@izo.red
 
 ## Disclaimer
 

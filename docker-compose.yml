@@ -1,4 +1,4 @@
-# Stillframe — local-first, two-container app.
+# Stillframe — two-container app, runs on your machine.
 # Phase 1: backend only. Frontend service added once the UI exists.
 
 services:

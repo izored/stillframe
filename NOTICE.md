@@ -6,15 +6,11 @@ own licenses, retained below as required.
 
 ---
 
-## mental-wellness-prompts ("Moss")
+## mental-wellness-prompts
 
-Stillframe's safety layer and the Editor's prompt/identity content are derived
-from **joebwd/mental-wellness-prompts** (https://github.com/joebwd/mental-wellness-prompts),
-specifically the deterministic safety supervisor (crisis detection, policy
-blocks, streaming output buffer), the conversation/tone guidance, and the
-crisis resource data. These derived portions remain under the MIT License
-below. Stillframe drops the original project's CLI and replaces its
-CLI-subprocess providers with HTTP provider adapters.
+Stillframe's early safety scaffolding referenced
+**joebwd/mental-wellness-prompts** (MIT). Stillframe is developing its own
+implementation; this notice is retained for MIT compliance.
 
 ```
 MIT License

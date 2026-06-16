@@ -1,6 +1,5 @@
 """Deterministic wellness safety supervision for the reflect path.
 
-Ported from the foundation repo (joebwd/mental-wellness-prompts).
 Keeps conversational safety in Python:
   - classify inbound user text before a provider call
   - track explicit session-level crisis state

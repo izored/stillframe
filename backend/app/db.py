@@ -1,7 +1,7 @@
-"""SQLite persistence — local-first.
+"""SQLite persistence — runs on your machine.
 
-Schema carries the foundation repo's model (facts, mood, summaries) and adds
-Stillframe's structure: scenes, frames, arcs. Encryption at rest (SQLCipher)
+Schema covers facts, mood, and summaries plus Stillframe's structure: scenes,
+frames, arcs. Encryption at rest (SQLCipher)
 and per-scene passcodes arrive in a later security phase; the schema is shaped
 for it now (scenes.private, scenes.encrypted).
 """

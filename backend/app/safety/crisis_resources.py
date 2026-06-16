@@ -1,6 +1,5 @@
 """Crisis resources — regional hotline data and the standard crisis response.
 
-Data carried from the foundation repo's safety_crisis_resources.md.
 Surfaced by the Safe Set layer and the frontend crisis interrupt.
 """
 
